@@ -1,29 +1,53 @@
 <template>
-  <h1>Welcome to Home page</h1>
-  <div class="LogOut">
-    <button v-on:click="LogOut">LogOut</button>
+  <Header></Header>
+  <h1>hello {{ name }},Welcome to Home page</h1>
+  <div>
+    {{ RestaurantList }}
   </div>
+  <!-- <div class="LogOut">
+    <button v-on:click="LogOut">LogOut</button>
+  </div> -->
 </template>
 
 <script>
+import Header from "./Header.vue";
+import axios from "axios";
 export default {
   name: "HomePage",
-  data() {},
+  components: {
+    Header,
+  },
+  data() {
+    return {
+      name: "",
+      RestaurantList: {},
+    };
+  },
   methods: {
-    LogOut() {
-      console.log(localStorage.getItem("user-info"));
-      localStorage.clear();
-      console.log(localStorage.getItem("user-info"));
-      if (localStorage.getItem("user-info") == null) {
-        this.$router.push({ name: "Login" });
+    // LogOut() {
+    //   // console.log(localStorage.getItem("user-info"));
+    //   localStorage.clear();
+    //   // console.log(localStorage.getItem("user-info"));
+    //   if (localStorage.getItem("user-info") == null) {
+    //     this.$router.push({ name: "Login" });
+    //   }
+    // },
+    async getResto() {
+      debugger;
+      let restoList = await axios.get(`http://localhost:3000/restaurant`);
+      if (restoList) {
+        console.log(restoList.data);
+        this.RestaurantList = restoList.data;
       }
     },
   },
   mounted() {
+    debugger;
     let user = localStorage.getItem("user-info");
-    if (!user) {
-      this.$router.push({ name: "SingUp" });
-    }
+
+    if (!user) this.$router.push({ name: "SingUp" });
+    else this.name = JSON.parse(user).name;
+    this.getResto();
   },
 };
 </script>

@@ -33,8 +33,8 @@ export default {
       console.warn(result);
       if (result.status == 201) {
         alert("Sign-Up done successfully");
-        localStorage.setItem("user-info", JSON.stringify(result.data));
-        this.$router.push({ name: "Home" });
+        // localStorage.setItem("user-info", JSON.stringify(result.data));
+        this.$router.push({ name: "Login" });
       }
       // console.warn(
       //   "SignUp values are" + this.name + this.email + this.password
